@@ -1,1 +1,285 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delivery Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0F0D0A; --bg2: #1A1611; --border: #2E2A22;
+      --text: #F0E9DC; --text2: #BFB49E; --text3: #7A7262;
+      --gold: #C9A84C; --gold-soft: rgba(201,168,76,0.12);
+      --green: #81C784; --green-soft: rgba(129,199,132,0.12);
+      --red: #EF5350; --red-soft: rgba(239,83,80,0.10);
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 16px 12px 40px;
+    }
+    .logo {
+      margin: 12px 0 20px; display: flex; align-items: center;
+      gap: 8px; color: var(--gold); font-size: 15px;
+      font-weight: 600; letter-spacing: 0.4px;
+    }
+    .logo svg { width: 20px; height: 20px; }
+    .card {
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: 14px; width: 100%; max-width: 420px;
+      overflow: hidden; margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-bottom: 0.5px solid var(--border);
+    }
+    .card-header h2 {
+      font-size: 13px; font-weight: 500; color: var(--text2);
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
+    .order-num { font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    }
+    .badge.delivery {
+      background: var(--gold-soft); border: 0.5px solid rgba(201,168,76,0.30); color: var(--gold);
+    }
+    .badge.delivered {
+      background: var(--green-soft); border: 0.5px solid rgba(129,199,132,0.30); color: var(--green);
+    }
+    .card-body { padding: 14px 16px; }
+    .row {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 0; border-bottom: 0.5px solid var(--border);
+    }
+    .row:last-child { border-bottom: none; }
+    .row-icon {
+      margin-top: 1px; width: 30px; height: 30px; border-radius: 8px;
+      background: var(--gold-soft); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+    }
+    .row-icon svg { width: 15px; height: 15px; color: var(--gold); }
+    .row-content { flex: 1; }
+    .row-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .row-value { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .row-value.phone { color: var(--gold); font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
+    .row-value.address { color: var(--text2); font-weight: 400; }
+    .items-list { list-style: none; }
+    .items-list li {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--border); font-size: 12px;
+    }
+    .items-list li:last-child { border-bottom: none; }
+    .item-qty {
+      background: var(--gold-soft); color: var(--gold); font-weight: 700;
+      font-size: 11px; min-width: 24px; height: 24px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .item-name { flex: 1; color: var(--text2); line-height: 1.4; }
+    .item-note { font-size: 10px; color: var(--gold); font-style: italic; margin-top: 2px; }
+    .item-sups { font-size: 10px; color: var(--text3); margin-top: 2px; }
+    .item-price { color: var(--text); font-weight: 600; white-space: nowrap; }
+    .totals { padding: 10px 0 0; }
+    .total-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+    .total-row.grand {
+      font-size: 15px; font-weight: 600; color: var(--gold);
+      padding-top: 8px; border-top: 0.5px solid var(--border); margin-top: 6px;
+    }
+    .confirm-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; max-width: 420px; padding: 16px; background: var(--gold);
+      color: #0F0D0A; font-size: 15px; font-weight: 700; border: none;
+      border-radius: 12px; cursor: pointer; margin-top: 4px; transition: opacity 0.15s;
+    }
+    .confirm-btn:active { opacity: 0.85; }
+    .confirm-btn svg { width: 18px; height: 18px; }
+    .delivered-banner {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--green-soft); border: 0.5px solid rgba(129,199,132,0.30);
+      border-radius: 12px; padding: 14px 16px; width: 100%; max-width: 420px;
+      color: var(--green); font-size: 13px; font-weight: 500;
+    }
+    .error-box {
+      background: var(--red-soft); border: 0.5px solid rgba(239,83,80,0.30);
+      border-radius: 12px; padding: 20px; text-align: center;
+      max-width: 380px; color: var(--red);
+    }
+    .error-box h2 { font-size: 16px; margin-bottom: 8px; }
+    .error-box p { font-size: 12px; opacity: 0.75; }
+    .token-label { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; letter-spacing: 0.4px; }
+    .spinner {
+      width: 32px; height: 32px; border: 3px solid var(--border);
+      border-top-color: var(--gold); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 40px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+    Delivery Portal
+  </div>
+  <div id="app"><div class="spinner"></div></div>
+
+<script>
+const API = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
+const token = new URLSearchParams(location.search).get('token');
+
+const icons = {
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`,
+  map: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  pay: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+};
+
+function orderTypeLabel(t) {
+  return t === 'dine_in' ? 'Dine In' : t === 'takeaway' ? 'Takeaway' : 'Delivery';
+}
+
+async function confirmDelivery() {
+  const btn = document.getElementById('confirm-btn');
+  btn.disabled = true;
+  btn.innerHTML = icons.check + ' Confirming...';
+  const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=confirm`, { method: 'POST' });
+  if (res.ok) loadPage(); // reload
+}
+
+function renderPage(order) {
+  const app = document.getElementById('app');
+  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  const delivered = order.status === 'delivered';
+  const shortToken = 'TKN-' + order.id.replace(/-/g, '').toUpperCase().substring(0, 8);
+  const deliveryFee = Number(order.delivery_fee || 0);
+  const subtotal = Number(order.subtotal);
+  const total = Number(order.total);
+
+  const itemsHtml = items.map(item => {
+    const sups = item.supplements || [];
+    return `<li>
+      <span class="item-qty">x${item.quantity}</span>
+      <span class="item-name">
+        ${item.name}${item.size ? ` <span style="color:var(--text3);font-size:10px">(${item.size})</span>` : ''}
+        ${sups.length ? `<div class="item-sups">+ ${sups.map(s => s.name).join(', ')}</div>` : ''}
+        ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+      </span>
+      <span class="item-price">${Number(item.unit_price).toFixed(2)} DA</span>
+    </li>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Order</div>
+          <div class="order-num">#${order.order_number}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="badge delivery">${orderTypeLabel(order.order_type)}</span>
+          ${delivered ? `<span class="badge delivered">${icons.check} Delivered</span>` : ''}
+        </div>
+      </div>
+      ${order.phone ? `
+      <div class="card-body">
+        <div class="row">
+          <div class="row-icon">${icons.phone}</div>
+          <div class="row-content">
+            <div class="row-label">Customer Phone</div>
+            <div class="row-value phone"><a href="tel:${order.phone}" style="color:inherit;text-decoration:none">${order.phone}</a></div>
+          </div>
+        </div>
+      </div>` : ''}
+    </div>
+
+    ${order.address ? `
+    <div class="card">
+      <div class="card-header"><h2>Delivery Address</h2></div>
+      <div class="card-body">
+        <div class="row" style="border:none;padding:4px 0">
+          <div class="row-icon">${icons.map}</div>
+          <div class="row-content">
+            <div class="row-label">Drop off at</div>
+            <div class="row-value address">${order.address}</div>
+            ${order.wilaya && order.wilaya !== 'N/A' ? `<div style="font-size:11px;color:var(--text3);margin-top:3px">${order.wilaya}</div>` : ''}
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=${encodeURIComponent(order.address)}" target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
+                  padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
+                  border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
+          ${icons.map} Open in Maps
+        </a>
+      </div>
+    </div>` : ''}
+
+    <div class="card">
+      <div class="card-header"><h2>Items Ordered</h2></div>
+      <div class="card-body">
+        <ul class="items-list">${itemsHtml}</ul>
+        <div class="totals">
+          <div class="total-row"><span>Subtotal</span><span>${subtotal.toFixed(2)} DA</span></div>
+          ${deliveryFee > 0 ? `<div class="total-row"><span>Delivery Fee</span><span>${deliveryFee.toFixed(2)} DA</span></div>` : ''}
+          <div class="total-row grand"><span>Total</span><span>${total.toFixed(2)} DA</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Payment</h2></div>
+      <div class="card-body">
+        <div class="row" style="border:none;padding:4px 0">
+          <div class="row-icon">${icons.pay}</div>
+          <div class="row-content">
+            <div class="row-label">Method</div>
+            <div class="row-value">${(order.payment_method || 'Cash').toUpperCase()}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="row-label">Status</div>
+            <div style="font-size:12px;font-weight:600;color:${order.payment_status === 'paid' ? 'var(--green)' : 'var(--gold)'}">
+              ${(order.payment_status || 'unpaid').toUpperCase()}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    ${order.notes ? `
+    <div class="card">
+      <div class="card-header"><h2>Order Notes</h2></div>
+      <div class="card-body" style="padding:14px 16px">
+        <p style="font-size:12px;color:var(--text2);line-height:1.5">${order.notes}</p>
+      </div>
+    </div>` : ''}
+
+    ${delivered
+      ? `<div class="delivered-banner">${icons.check} <span>Order already marked as delivered</span></div>`
+      : `<button id="confirm-btn" class="confirm-btn" onclick="confirmDelivery()">${icons.check} Confirm Delivery</button>`
+    }
+    <div class="token-label">${shortToken}</div>
+  `;
+}
+
+async function loadPage() {
+  if (!token) {
+    document.getElementById('app').innerHTML = `<div class="error-box"><h2>Invalid Link</h2><p>Missing token. Please scan the QR code again.</p></div>`;
+    return;
+  }
+  try {
+    const res = await fetch(`${API}?token=${encodeURIComponent(token)}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    renderPage(data.order);
+  } catch (e) {
+    document.getElementById('app').innerHTML = `<div class="error-box"><h2>Error</h2><p>${e.message}</p></div>`;
+  }
+}
+
+loadPage();
+</script>
+</body>
+</html>
