@@ -11,7 +11,7 @@
       --text: #F0E9DC; --text2: #BFB49E; --text3: #7A7262;
       --gold: #C9A84C; --gold-soft: rgba(201,168,76,0.12);
       --green: #81C784; --green-soft: rgba(129,199,132,0.12);
-      --blue: #64B5F6; --blue-soft: rgba(100,181,246,0.12);
+      --blue: #C9A84C; --blue-soft: rgba(201,168,76,0.12);
       --red: #EF5350; --red-soft: rgba(239,83,80,0.10);
     }
     body {
@@ -292,7 +292,7 @@ function renderPage(order) {
   // Button config per status
   const btnConfig = isOnDelivery
     ? { cls: 'btn-green', fn: 'confirmDelivered()', icon: icons.check, label: 'Mark as Delivered' }
-    : { cls: 'btn-blue',  fn: 'startDelivery()',    icon: icons.truck, label: 'Confirm Pickup & Start Delivery' };
+    : { cls: 'btn-blue',  fn: 'startDelivery()',    icon: icons.truck, label: 'Start Delivery' };
 
   const badgeClass = isOnDelivery ? 'on-delivery' : 'delivery';
 
