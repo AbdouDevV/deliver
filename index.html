@@ -1,208 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Delivery Portal</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0F0D0A; --bg2: #1A1611; --border: #2E2A22;
-      --text: #F0E9DC; --text2: #BFB49E; --text3: #7A7262;
-      --gold: #C9A84C; --gold-soft: rgba(201,168,76,0.12);
-      --green: #81C784; --green-soft: rgba(129,199,132,0.12);
-      --blue: #C9A84C; --blue-soft: rgba(201,168,76,0.12);
-      --red: #EF5350; --red-soft: rgba(239,83,80,0.10);
-    }
-    body {
-      background: var(--bg); color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; padding: 16px 12px 40px;
-    }
-    .logo {
-      margin: 12px 0 20px; display: flex; align-items: center;
-      gap: 8px; color: var(--gold); font-size: 15px;
-      font-weight: 600; letter-spacing: 0.4px;
-    }
-    .logo svg { width: 20px; height: 20px; }
-    .card {
-      background: var(--bg2); border: 0.5px solid var(--border);
-      border-radius: 14px; width: 100%; max-width: 420px;
-      overflow: hidden; margin-bottom: 12px;
-    }
-    .card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px; border-bottom: 0.5px solid var(--border);
-    }
-    .card-header h2 {
-      font-size: 13px; font-weight: 500; color: var(--text2);
-      letter-spacing: 0.6px; text-transform: uppercase;
-    }
-    .order-num { font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
-    }
-    .badge.delivery {
-      background: var(--gold-soft); border: 0.5px solid rgba(201,168,76,0.30); color: var(--gold);
-    }
-    .badge.on-delivery {
-      background: var(--blue-soft); border: 0.5px solid rgba(100,181,246,0.30); color: var(--blue);
-    }
-    .card-body { padding: 14px 16px; }
-    .row {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 9px 0; border-bottom: 0.5px solid var(--border);
-    }
-    .row:last-child { border-bottom: none; }
-    .row-icon {
-      margin-top: 1px; width: 30px; height: 30px; border-radius: 8px;
-      background: var(--gold-soft); display: flex; align-items: center;
-      justify-content: center; flex-shrink: 0;
-    }
-    .row-icon svg { width: 15px; height: 15px; color: var(--gold); }
-    .row-content { flex: 1; }
-    .row-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .row-value { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
-    .row-value.phone { color: var(--gold); font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
-    .row-value.address { color: var(--text2); font-weight: 400; }
-    .items-list { list-style: none; }
-    .items-list li {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--border); font-size: 12px;
-    }
-    .items-list li:last-child { border-bottom: none; }
-    .item-qty {
-      background: var(--gold-soft); color: var(--gold); font-weight: 700;
-      font-size: 11px; min-width: 24px; height: 24px; border-radius: 5px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .item-name { flex: 1; color: var(--text2); line-height: 1.4; }
-    .item-note { font-size: 10px; color: var(--gold); font-style: italic; margin-top: 2px; }
-    .item-sups { font-size: 10px; color: var(--text3); margin-top: 2px; }
-    .item-price { color: var(--text); font-weight: 600; white-space: nowrap; }
-    .totals { padding: 10px 0 0; }
-    .total-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
-    .total-row.grand {
-      font-size: 15px; font-weight: 600; color: var(--gold);
-      padding-top: 8px; border-top: 0.5px solid var(--border); margin-top: 6px;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Delivery Portal</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0F0D0A; --bg2: #1A1611; --border: #2E2A22;
+  --text: #F0E9DC; --text2: #BFB49E; --text3: #7A7262;
+  --gold: #C9A84C; --gold-soft: rgba(201,168,76,0.12);
+  --green: #81C784; --green-soft: rgba(129,199,132,0.12);
+  --red: #EF5350; --red-soft: rgba(239,83,80,0.10);
+}
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; padding: 16px 12px 40px;
+}
+.logo {
+  margin: 12px 0 20px; display: flex; align-items: center;
+  gap: 8px; color: var(--gold); font-size: 15px;
+  font-weight: 600; letter-spacing: 0.4px;
+}
+.logo svg { width: 20px; height: 20px; }
 
-    /* ── Status progress bar ── */
-    .status-bar {
-      width: 100%; max-width: 420px; margin-bottom: 12px;
-      background: var(--bg2); border: 0.5px solid var(--border);
-      border-radius: 14px; padding: 16px;
-    }
-    .status-steps { display: flex; align-items: center; justify-content: space-between; }
-    .step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
-    .step-dot {
-      width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; color: var(--text3); transition: all 0.3s;
-    }
-    .step-dot.active   { border-color: var(--gold);  background: var(--gold-soft);  color: var(--gold); }
-    .step-dot.done     { border-color: var(--green); background: var(--green-soft); color: var(--green); }
-    .step-dot.current-blue { border-color: var(--blue); background: var(--blue-soft); color: var(--blue); }
-    .step-label { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; text-align: center; }
-    .step-label.active { color: var(--gold); }
-    .step-label.done   { color: var(--green); }
-    .step-label.current-blue { color: var(--blue); }
-    .step-line { flex: 1; height: 1px; background: var(--border); margin: 0 4px; margin-bottom: 14px; transition: background 0.3s; }
-    .step-line.done { background: var(--green); }
-    .step-line.active { background: var(--gold); }
+/* ── Status progress bar ── */
+.status-bar {
+  width: 100%; max-width: 420px; margin-bottom: 12px;
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 14px; padding: 16px;
+}
+.status-steps { display: flex; align-items: center; justify-content: space-between; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.step-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text3);
+}
+.step-dot.done     { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+.step-dot.active   { border-color: var(--gold);  background: var(--gold-soft);  color: var(--gold); }
+.step-label { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; text-align: center; }
+.step-label.done   { color: var(--green); }
+.step-label.active { color: var(--gold); }
+.step-line { flex: 1; height: 1px; background: var(--border); margin: 0 4px; margin-bottom: 14px; }
+.step-line.done { background: var(--green); }
+.step-line.gold { background: var(--gold); }
 
-    /* ── Action buttons ── */
-    .btn-primary {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; max-width: 420px; padding: 16px; font-size: 15px; font-weight: 700;
-      border: none; border-radius: 12px; cursor: pointer; margin-top: 4px;
-      transition: opacity 0.15s;
-    }
-    .btn-primary:active { opacity: 0.85; }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary svg { width: 18px; height: 18px; }
-    .btn-gold  { background: var(--gold);  color: #0F0D0A; }
-    .btn-blue  { background: var(--blue);  color: #0F0D0A; }
-    .btn-green { background: var(--green); color: #0F0D0A; }
+/* ── Cards ── */
+.card {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 14px; width: 100%; max-width: 420px;
+  overflow: hidden; margin-bottom: 12px;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 0.5px solid var(--border);
+}
+.card-header h2 { font-size: 13px; font-weight: 500; color: var(--text2); letter-spacing: 0.6px; text-transform: uppercase; }
+.order-num { font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.badge.delivery   { background: var(--gold-soft);  border: 0.5px solid rgba(201,168,76,0.30);  color: var(--gold); }
+.badge.on-delivery{ background: var(--gold-soft);  border: 0.5px solid rgba(201,168,76,0.30);  color: var(--gold); }
+.card-body { padding: 14px 16px; }
+.row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 0.5px solid var(--border);
+}
+.row:last-child { border-bottom: none; }
+.row-icon {
+  margin-top: 1px; width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold-soft); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.row-icon svg { width: 15px; height: 15px; color: var(--gold); }
+.row-content { flex: 1; }
+.row-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.row-value { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+.row-value.phone { color: var(--gold); font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
+.row-value.address { color: var(--text2); font-weight: 400; }
+.items-list { list-style: none; }
+.items-list li {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--border); font-size: 12px;
+}
+.items-list li:last-child { border-bottom: none; }
+.item-qty {
+  background: var(--gold-soft); color: var(--gold); font-weight: 700;
+  font-size: 11px; min-width: 24px; height: 24px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.item-name { flex: 1; color: var(--text2); line-height: 1.4; }
+.item-note { font-size: 10px; color: var(--gold); font-style: italic; margin-top: 2px; }
+.item-sups { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.item-price { color: var(--text); font-weight: 600; white-space: nowrap; }
+.totals { padding: 10px 0 0; }
+.total-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+.total-row.grand {
+  font-size: 15px; font-weight: 600; color: var(--gold);
+  padding-top: 8px; border-top: 0.5px solid var(--border); margin-top: 6px;
+}
 
-    /* ── State screens ── */
-    .state-card {
-      border-radius: 14px; width: 100%; max-width: 420px;
-      padding: 40px 24px; text-align: center; margin-bottom: 12px;
-    }
-    .state-icon {
-      width: 72px; height: 72px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-    }
-    .error-box {
-      background: var(--red-soft); border: 0.5px solid rgba(239,83,80,0.30);
-      border-radius: 12px; padding: 20px; text-align: center;
-      max-width: 380px; color: var(--red);
-    }
-    .error-box h2 { font-size: 16px; margin-bottom: 8px; }
-    .error-box p  { font-size: 12px; opacity: 0.75; }
-    .token-label  { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; letter-spacing: 0.4px; }
-    .spinner {
-      width: 32px; height: 32px; border: 3px solid var(--border);
-      border-top-color: var(--gold); border-radius: 50%;
-      animation: spin 0.8s linear infinite; margin: 40px auto;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+/* ── Action buttons ── */
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; max-width: 420px; padding: 16px; font-size: 15px; font-weight: 700;
+  border: none; border-radius: 12px; cursor: pointer; margin-top: 4px;
+  transition: opacity 0.15s;
+}
+.btn-primary:active { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary svg { width: 18px; height: 18px; }
+.btn-gold  { background: var(--gold);  color: #0F0D0A; }
+.btn-green { background: var(--green); color: #0F0D0A; }
+
+/* ── Delivered screen ── */
+.state-card {
+  border-radius: 14px; width: 100%; max-width: 420px;
+  padding: 40px 24px; text-align: center; margin-bottom: 12px;
+}
+.state-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+
+/* ── Error / loading ── */
+.error-box {
+  background: var(--red-soft); border: 0.5px solid rgba(239,83,80,0.30);
+  border-radius: 12px; padding: 20px; text-align: center;
+  max-width: 380px; color: var(--red);
+}
+.error-box h2 { font-size: 16px; margin-bottom: 8px; }
+.error-box p  { font-size: 12px; opacity: 0.75; }
+.token-label  { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; letter-spacing: 0.4px; }
+.spinner {
+  width: 32px; height: 32px; border: 3px solid var(--border);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 40px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
 </head>
 <body>
-  <div class="logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M5 12h14M12 5l7 7-7 7"/>
-    </svg>
-    Delivery Portal
-  </div>
-  <div id="app"><div class="spinner"></div></div>
+
+<div class="logo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+  Delivery Portal
+</div>
+
+<div id="app"><div class="spinner"></div></div>
 
 <script>
 const API   = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
 const token = new URLSearchParams(location.search).get('token');
 
 const icons = {
-  phone:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`,
-  map:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-  check:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
-  truck:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
-  clock:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`,
+  map:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  truck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
 };
 
 function orderTypeLabel(t) {
   return t === 'dine_in' ? 'Dine In' : t === 'takeaway' ? 'Takeaway' : 'Delivery';
 }
 
-// ── Step tracker UI ──────────────────────────────────────────────────────────
+// ── Step progress bar ────────────────────────────────────────────────────────
 function renderStatusBar(status) {
-  // steps: pending → on_delivery → delivered
   const steps = [
-    { key: 'pending',     label: 'Pending'  },
-    { key: 'on_delivery', label: 'On Route' },
-    { key: 'delivered',   label: 'Delivered'},
+    { key: 'pending',     label: 'Pending'   },
+    { key: 'on_delivery', label: 'On Route'  },
+    { key: 'delivered',   label: 'Delivered' },
   ];
   const idx = steps.findIndex(s => s.key === status);
 
-  const dotsHtml = steps.map((s, i) => {
+  const html = steps.map((s, i) => {
     let dotClass   = '';
     let labelClass = '';
     let icon       = (i + 1).toString();
 
     if (i < idx) {
+      // completed step → green
       dotClass = 'done'; labelClass = 'done'; icon = '✓';
     } else if (i === idx) {
-      if (s.key === 'on_delivery') { dotClass = 'current-blue'; labelClass = 'current-blue'; }
-      else if (s.key === 'delivered') { dotClass = 'done'; labelClass = 'done'; icon = '✓'; }
-      else { dotClass = 'active'; labelClass = 'active'; }
+      if (s.key === 'delivered') {
+        // delivered is always "done" (green)
+        dotClass = 'done'; labelClass = 'done'; icon = '✓';
+      } else {
+        // pending or on_delivery active step → gold
+        dotClass = 'active'; labelClass = 'active';
+      }
     }
 
+    // connector line between dots
+    const lineClass = i < idx ? 'done' : (i === idx - 1 ? 'gold' : '');
     const line = i < steps.length - 1
-      ? `<div class="step-line ${i < idx ? 'done' : i === idx - 1 ? 'active' : ''}"></div>`
+      ? `<div class="step-line ${lineClass}"></div>`
       : '';
 
     return `
@@ -210,28 +211,26 @@ function renderStatusBar(status) {
         <div class="step-dot ${dotClass}">${icon}</div>
         <div class="step-label ${labelClass}">${s.label}</div>
       </div>
-      ${line}
-    `;
+      ${line}`;
   }).join('');
 
-  return `<div class="status-bar"><div class="status-steps">${dotsHtml}</div></div>`;
+  return `<div class="status-bar"><div class="status-steps">${html}</div></div>`;
 }
 
-// ── Action: set on_delivery ──────────────────────────────────────────────────
+// ── Actions ──────────────────────────────────────────────────────────────────
 async function startDelivery() {
   const btn = document.getElementById('action-btn');
   btn.disabled = true;
-  btn.innerHTML = icons.truck + ' Updating...';
+  btn.innerHTML = icons.truck + ' Updating…';
   const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=start`, { method: 'POST' });
   if (res.ok) loadPage();
-  else { btn.disabled = false; btn.innerHTML = icons.truck + ' Confirm Pickup'; }
+  else { btn.disabled = false; btn.innerHTML = icons.truck + ' Start Delivery'; }
 }
 
-// ── Action: set delivered ────────────────────────────────────────────────────
 async function confirmDelivered() {
   const btn = document.getElementById('action-btn');
   btn.disabled = true;
-  btn.innerHTML = icons.check + ' Confirming...';
+  btn.innerHTML = icons.check + ' Confirming…';
   const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=confirm`, { method: 'POST' });
   if (res.ok) loadPage();
   else { btn.disabled = false; btn.innerHTML = icons.check + ' Mark as Delivered'; }
@@ -242,7 +241,7 @@ function renderPage(order) {
   const app        = document.getElementById('app');
   const shortToken = 'TKN-' + order.id.replace(/-/g, '').toUpperCase().substring(0, 8);
 
-  // ── Fully delivered ────────────────────────────────────────────────────────
+  // ── Delivered ──────────────────────────────────────────────────────────────
   if (order.status === 'delivered') {
     app.innerHTML = `
       ${renderStatusBar('delivered')}
@@ -259,8 +258,8 @@ function renderPage(order) {
           has been successfully delivered.
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;
-                    background:var(--green-soft);border:0.5px solid rgba(129,199,132,0.3);
-                    border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">
+          background:var(--green-soft);border:0.5px solid rgba(129,199,132,0.3);
+          border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">
           ${icons.check} Completed
         </div>
       </div>
@@ -268,13 +267,12 @@ function renderPage(order) {
     return;
   }
 
-  // ── On delivery (picked up, in transit) ───────────────────────────────────
+  // ── Pending / On Delivery ──────────────────────────────────────────────────
   const isOnDelivery = order.status === 'on_delivery';
-
-  const items       = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
-  const deliveryFee = Number(order.delivery_fee || 0);
-  const subtotal    = Number(order.subtotal);
-  const total       = Number(order.total);
+  const items        = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  const deliveryFee  = Number(order.delivery_fee || 0);
+  const subtotal     = Number(order.subtotal);
+  const total        = Number(order.total);
 
   const itemsHtml = items.map(item => {
     const sups = item.supplements || [];
@@ -283,18 +281,17 @@ function renderPage(order) {
       <span class="item-name">
         ${item.name}${item.size ? ` <span style="color:var(--text3);font-size:10px">(${item.size})</span>` : ''}
         ${sups.length ? `<div class="item-sups">+ ${sups.map(s => s.name).join(', ')}</div>` : ''}
-        ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+        ${item.note  ? `<div class="item-note">📝 ${item.note}</div>` : ''}
       </span>
       <span class="item-price">${Number(item.unit_price).toFixed(2)} DA</span>
     </li>`;
   }).join('');
 
-  // Button config per status
+  // Gold button for pending → Start Delivery
+  // Green button for on_delivery → Mark as Delivered
   const btnConfig = isOnDelivery
     ? { cls: 'btn-green', fn: 'confirmDelivered()', icon: icons.check, label: 'Mark as Delivered' }
-    : { cls: 'btn-blue',  fn: 'startDelivery()',    icon: icons.truck, label: 'Start Delivery' };
-
-  const badgeClass = isOnDelivery ? 'on-delivery' : 'delivery';
+    : { cls: 'btn-gold',  fn: 'startDelivery()',    icon: icons.truck, label: 'Start Delivery'    };
 
   app.innerHTML = `
     ${renderStatusBar(order.status)}
@@ -305,7 +302,9 @@ function renderPage(order) {
           <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Order</div>
           <div class="order-num">#${order.order_number}</div>
         </div>
-        <span class="badge ${badgeClass}">${isOnDelivery ? icons.truck + ' On Route' : orderTypeLabel(order.order_type)}</span>
+        <span class="badge ${isOnDelivery ? 'on-delivery' : 'delivery'}">
+          ${isOnDelivery ? icons.truck + ' On Route' : orderTypeLabel(order.order_type)}
+        </span>
       </div>
       ${order.phone ? `
       <div class="card-body">
@@ -337,8 +336,8 @@ function renderPage(order) {
         </div>
         <a href="https://maps.google.com/?q=${encodeURIComponent(order.address)}" target="_blank"
            style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
-                  padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
-                  border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
+             padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
+             border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
           ${icons.map} Open in Maps
         </a>
       </div>
@@ -369,10 +368,10 @@ function renderPage(order) {
     <button id="action-btn" class="btn-primary ${btnConfig.cls}" onclick="${btnConfig.fn}">
       ${btnConfig.icon} ${btnConfig.label}
     </button>
-    <div class="token-label">${shortToken}</div>
-  `;
+    <div class="token-label">${shortToken}</div>`;
 }
 
+// ── Load ─────────────────────────────────────────────────────────────────────
 async function loadPage() {
   if (!token) {
     document.getElementById('app').innerHTML =
