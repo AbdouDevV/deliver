@@ -149,16 +149,93 @@ body {
 </head>
 <body>
 
-<div class="logo">
+<div class="logo" id="logo-el">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
-  Delivery Portal
+  <span id="logo-text"></span>
 </div>
 
 <div id="app"><div class="spinner"></div></div>
 
 <script>
+// ── Translations ──────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  en: {
+    logo:           'Delivery Portal',
+    order:          'Order',
+    pending:        'Pending',
+    onRoute:        'On Route',
+    delivered:      'Delivered',
+    customerPhone:  'Customer Phone',
+    deliveryAddress:'Delivery Address',
+    dropOff:        'Drop off at',
+    openMaps:       'Open in Maps',
+    itemsOrdered:   'Items Ordered',
+    subtotal:       'Subtotal',
+    deliveryFee:    'Delivery Fee',
+    total:          'Total',
+    orderNotes:     'Order Notes',
+    startDelivery:  'Start Delivery',
+    markDelivered:  'Mark as Delivered',
+    updating:       'Updating…',
+    confirming:     'Confirming…',
+    deliveredMsg:   'has been successfully delivered.',
+    completed:      'Completed',
+    invalidLink:    'Invalid Link',
+    missingToken:   'Missing token. Please scan the QR code again.',
+    error:          'Error',
+    dineIn:         'Dine In',
+    takeaway:       'Takeaway',
+    delivery:       'Delivery',
+  },
+  fr: {
+    logo:           'Portail Livraison',
+    order:          'Commande',
+    pending:        'En attente',
+    onRoute:        'En route',
+    delivered:      'Livré',
+    customerPhone:  'Téléphone client',
+    deliveryAddress:'Adresse de livraison',
+    dropOff:        'Déposer à',
+    openMaps:       'Ouvrir dans Maps',
+    itemsOrdered:   'Articles commandés',
+    subtotal:       'Sous-total',
+    deliveryFee:    'Frais de livraison',
+    total:          'Total',
+    orderNotes:     'Notes de commande',
+    startDelivery:  'Démarrer la livraison',
+    markDelivered:  'Marquer comme livré',
+    updating:       'Mise à jour…',
+    confirming:     'Confirmation…',
+    deliveredMsg:   'a été livré avec succès.',
+    completed:      'Terminé',
+    invalidLink:    'Lien invalide',
+    missingToken:   'Jeton manquant. Veuillez scanner à nouveau le QR code.',
+    error:          'Erreur',
+    dineIn:         'Sur place',
+    takeaway:       'À emporter',
+    delivery:       'Livraison',
+  },
+};
+
+// ── Language detection ────────────────────────────────────────────────────────
+function getLang() {
+  const raw  = navigator.language || navigator.userLanguage || 'en';
+  const code = raw.split('-')[0].toLowerCase();
+  return TRANSLATIONS[code] ? code : 'en';
+}
+
+const lang = getLang();
+const t    = TRANSLATIONS[lang];
+
+// Apply lang attribute to <html>
+document.documentElement.setAttribute('lang', lang);
+
+// Set logo text
+document.getElementById('logo-text').textContent = t.logo;
+
+// ── Constants ────────────────────────────────────────────────────────────────
 const API   = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
 const token = new URLSearchParams(location.search).get('token');
 
@@ -169,16 +246,17 @@ const icons = {
   truck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
 };
 
-function orderTypeLabel(t) {
-  return t === 'dine_in' ? 'Dine In' : t === 'takeaway' ? 'Takeaway' : 'Delivery';
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function orderTypeLabel(type) {
+  return type === 'dine_in' ? t.dineIn : type === 'takeaway' ? t.takeaway : t.delivery;
 }
 
-// ── Step progress bar ────────────────────────────────────────────────────────
+// ── Step progress bar ─────────────────────────────────────────────────────────
 function renderStatusBar(status) {
   const steps = [
-    { key: 'pending',     label: 'Pending'   },
-    { key: 'on_delivery', label: 'On Route'  },
-    { key: 'delivered',   label: 'Delivered' },
+    { key: 'pending',     label: t.pending   },
+    { key: 'on_delivery', label: t.onRoute   },
+    { key: 'delivered',   label: t.delivered },
   ];
   const idx = steps.findIndex(s => s.key === status);
 
@@ -188,19 +266,15 @@ function renderStatusBar(status) {
     let icon       = (i + 1).toString();
 
     if (i < idx) {
-      // completed step → green
       dotClass = 'done'; labelClass = 'done'; icon = '✓';
     } else if (i === idx) {
       if (s.key === 'delivered') {
-        // delivered is always "done" (green)
         dotClass = 'done'; labelClass = 'done'; icon = '✓';
       } else {
-        // pending or on_delivery active step → gold
         dotClass = 'active'; labelClass = 'active';
       }
     }
 
-    // connector line between dots
     const lineClass = i < idx ? 'done' : (i === idx - 1 ? 'gold' : '');
     const line = i < steps.length - 1
       ? `<div class="step-line ${lineClass}"></div>`
@@ -217,31 +291,31 @@ function renderStatusBar(status) {
   return `<div class="status-bar"><div class="status-steps">${html}</div></div>`;
 }
 
-// ── Actions ──────────────────────────────────────────────────────────────────
+// ── Actions ───────────────────────────────────────────────────────────────────
 async function startDelivery() {
   const btn = document.getElementById('action-btn');
   btn.disabled = true;
-  btn.innerHTML = icons.truck + ' Updating…';
+  btn.innerHTML = icons.truck + ` ${t.updating}`;
   const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=start`, { method: 'POST' });
   if (res.ok) loadPage();
-  else { btn.disabled = false; btn.innerHTML = icons.truck + ' Start Delivery'; }
+  else { btn.disabled = false; btn.innerHTML = icons.truck + ` ${t.startDelivery}`; }
 }
 
 async function confirmDelivered() {
   const btn = document.getElementById('action-btn');
   btn.disabled = true;
-  btn.innerHTML = icons.check + ' Confirming…';
+  btn.innerHTML = icons.check + ` ${t.confirming}`;
   const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=confirm`, { method: 'POST' });
   if (res.ok) loadPage();
-  else { btn.disabled = false; btn.innerHTML = icons.check + ' Mark as Delivered'; }
+  else { btn.disabled = false; btn.innerHTML = icons.check + ` ${t.markDelivered}`; }
 }
 
-// ── Render ───────────────────────────────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────────────────────
 function renderPage(order) {
   const app        = document.getElementById('app');
   const shortToken = 'TKN-' + order.id.replace(/-/g, '').toUpperCase().substring(0, 8);
 
-  // ── Delivered ──────────────────────────────────────────────────────────────
+  // ── Delivered state ────────────────────────────────────────────────────────
   if (order.status === 'delivered') {
     app.innerHTML = `
       ${renderStatusBar('delivered')}
@@ -252,15 +326,15 @@ function renderPage(order) {
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
-        <div style="font-size:24px;font-weight:700;color:var(--green);margin-bottom:10px">Delivered</div>
+        <div style="font-size:24px;font-weight:700;color:var(--green);margin-bottom:10px">${t.delivered}</div>
         <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:24px">
-          Order <span style="color:var(--text2);font-weight:600">#${order.order_number}</span>
-          has been successfully delivered.
+          ${t.order} <span style="color:var(--text2);font-weight:600">#${order.order_number}</span>
+          ${t.deliveredMsg}
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;
           background:var(--green-soft);border:0.5px solid rgba(129,199,132,0.3);
           border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">
-          ${icons.check} Completed
+          ${icons.check} ${t.completed}
         </div>
       </div>
       <div class="token-label">${shortToken}</div>`;
@@ -287,11 +361,9 @@ function renderPage(order) {
     </li>`;
   }).join('');
 
-  // Gold button for pending → Start Delivery
-  // Green button for on_delivery → Mark as Delivered
   const btnConfig = isOnDelivery
-    ? { cls: 'btn-green', fn: 'confirmDelivered()', icon: icons.check, label: 'Mark as Delivered' }
-    : { cls: 'btn-gold',  fn: 'startDelivery()',    icon: icons.truck, label: 'Start Delivery'    };
+    ? { cls: 'btn-green', fn: 'confirmDelivered()', icon: icons.check, label: t.markDelivered }
+    : { cls: 'btn-gold',  fn: 'startDelivery()',    icon: icons.truck, label: t.startDelivery };
 
   app.innerHTML = `
     ${renderStatusBar(order.status)}
@@ -299,11 +371,11 @@ function renderPage(order) {
     <div class="card">
       <div class="card-header">
         <div>
-          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Order</div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">${t.order}</div>
           <div class="order-num">#${order.order_number}</div>
         </div>
         <span class="badge ${isOnDelivery ? 'on-delivery' : 'delivery'}">
-          ${isOnDelivery ? icons.truck + ' On Route' : orderTypeLabel(order.order_type)}
+          ${isOnDelivery ? icons.truck + ' ' + t.onRoute : orderTypeLabel(order.order_type)}
         </span>
       </div>
       ${order.phone ? `
@@ -311,7 +383,7 @@ function renderPage(order) {
         <div class="row" style="border:none;padding:4px 0">
           <div class="row-icon">${icons.phone}</div>
           <div class="row-content">
-            <div class="row-label">Customer Phone</div>
+            <div class="row-label">${t.customerPhone}</div>
             <div class="row-value phone">
               <a href="tel:${order.phone}" style="color:inherit;text-decoration:none">${order.phone}</a>
             </div>
@@ -322,12 +394,12 @@ function renderPage(order) {
 
     ${order.address ? `
     <div class="card">
-      <div class="card-header"><h2>Delivery Address</h2></div>
+      <div class="card-header"><h2>${t.deliveryAddress}</h2></div>
       <div class="card-body">
         <div class="row" style="border:none;padding:4px 0">
           <div class="row-icon">${icons.map}</div>
           <div class="row-content">
-            <div class="row-label">Drop off at</div>
+            <div class="row-label">${t.dropOff}</div>
             <div class="row-value address">${order.address}</div>
             ${order.wilaya && order.wilaya !== 'N/A'
               ? `<div style="font-size:11px;color:var(--text3);margin-top:3px">${order.wilaya}</div>`
@@ -338,28 +410,28 @@ function renderPage(order) {
            style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
              padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
              border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
-          ${icons.map} Open in Maps
+          ${icons.map} ${t.openMaps}
         </a>
       </div>
     </div>` : ''}
 
     <div class="card">
-      <div class="card-header"><h2>Items Ordered</h2></div>
+      <div class="card-header"><h2>${t.itemsOrdered}</h2></div>
       <div class="card-body">
         <ul class="items-list">${itemsHtml}</ul>
         <div class="totals">
-          <div class="total-row"><span>Subtotal</span><span>${subtotal.toFixed(2)} DA</span></div>
+          <div class="total-row"><span>${t.subtotal}</span><span>${subtotal.toFixed(2)} DA</span></div>
           ${deliveryFee > 0
-            ? `<div class="total-row"><span>Delivery Fee</span><span>${deliveryFee.toFixed(2)} DA</span></div>`
+            ? `<div class="total-row"><span>${t.deliveryFee}</span><span>${deliveryFee.toFixed(2)} DA</span></div>`
             : ''}
-          <div class="total-row grand"><span>Total</span><span>${total.toFixed(2)} DA</span></div>
+          <div class="total-row grand"><span>${t.total}</span><span>${total.toFixed(2)} DA</span></div>
         </div>
       </div>
     </div>
 
     ${order.notes ? `
     <div class="card">
-      <div class="card-header"><h2>Order Notes</h2></div>
+      <div class="card-header"><h2>${t.orderNotes}</h2></div>
       <div class="card-body" style="padding:14px 16px">
         <p style="font-size:12px;color:var(--text2);line-height:1.5">${order.notes}</p>
       </div>
@@ -371,11 +443,11 @@ function renderPage(order) {
     <div class="token-label">${shortToken}</div>`;
 }
 
-// ── Load ─────────────────────────────────────────────────────────────────────
+// ── Load ──────────────────────────────────────────────────────────────────────
 async function loadPage() {
   if (!token) {
     document.getElementById('app').innerHTML =
-      `<div class="error-box"><h2>Invalid Link</h2><p>Missing token. Please scan the QR code again.</p></div>`;
+      `<div class="error-box"><h2>${t.invalidLink}</h2><p>${t.missingToken}</p></div>`;
     return;
   }
   try {
@@ -385,7 +457,7 @@ async function loadPage() {
     renderPage(data.order);
   } catch (e) {
     document.getElementById('app').innerHTML =
-      `<div class="error-box"><h2>Error</h2><p>${e.message}</p></div>`;
+      `<div class="error-box"><h2>${t.error}</h2><p>${e.message}</p></div>`;
   }
 }
 
