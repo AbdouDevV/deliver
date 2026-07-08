@@ -399,27 +399,31 @@ function renderPage(order) {
     </div>
 
     ${order.address ? `
-    <div class="card">
-      <div class="card-header"><h2>${t.deliveryAddress}</h2></div>
-      <div class="card-body">
-        <div class="row" style="border:none;padding:4px 0">
-          <div class="row-icon">${icons.map}</div>
-          <div class="row-content">
-            <div class="row-label">${t.dropOff}</div>
-            <div class="row-value address">${order.address}</div>
-            ${order.wilaya && order.wilaya !== 'N/A'
-              ? `<div style="font-size:11px;color:var(--text3);margin-top:3px">${order.wilaya}</div>`
-              : ''}
-          </div>
-        </div>
-        <a href="https://maps.google.com/?q=${encodeURIComponent(order.address)}" target="_blank"
-           style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
-             padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
-             border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
-          ${icons.map} ${t.openMaps}
-        </a>
+<div class="card">
+  <div class="card-header"><h2>${t.deliveryAddress}</h2></div>
+  <div class="card-body">
+    <div class="row" style="border:none;padding:4px 0">
+      <div class="row-icon">${icons.map}</div>
+      <div class="row-content">
+        <div class="row-label">${t.dropOff}</div>
+        <div class="row-value address">${order.address}</div>
+        ${order.wilaya && order.wilaya !== 'N/A'
+          ? `<div style="font-size:11px;color:var(--text3);margin-top:3px">${order.wilaya}</div>`
+          : ''}
       </div>
-    </div>` : ''}
+    </div>
+    <a href="${
+      order.latitude && order.longitude
+        ? `https://www.google.com/maps/dir/?api=1&destination=${order.latitude},${order.longitude}`
+        : `https://maps.google.com/?q=${encodeURIComponent(order.address)}`
+    }" target="_blank"
+       style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
+         padding:9px;background:var(--gold-soft);border:0.5px solid rgba(201,168,76,.25);
+         border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
+      ${icons.map} ${t.openMaps}
+    </a>
+  </div>
+</div>` : ''}
 
     <div class="card">
       <div class="card-header"><h2>${t.itemsOrdered}</h2></div>
