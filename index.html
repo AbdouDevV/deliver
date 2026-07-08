@@ -413,8 +413,8 @@ function renderPage(order) {
       </div>
     </div>
     <a href="${
-      order.latitude && order.longitude
-        ? `https://www.google.com/maps/dir/?api=1&destination=${order.latitude},${order.longitude}`
+      order.customer_location?.latitude && order.customer_location?.longitude
+        ? `https://www.google.com/maps/dir/?api=1&destination=${order.customer_location.latitude},${order.customer_location.longitude}`
         : `https://maps.google.com/?q=${encodeURIComponent(order.address)}`
     }" target="_blank"
        style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
