@@ -28,20 +28,16 @@ body {
   align-items: center; padding: 16px 12px 40px;
   transition: background 0.2s, color 0.2s;
 }
-.page-wrap {
-  position: relative;
-  width: 100%; max-width: 420px;
-}
 .logo {
-  width: fit-content; margin: 12px auto 20px; display: flex; align-items: center;
+  margin: 12px 0 20px; display: flex; align-items: center;
   gap: 8px; color: var(--gold); font-size: 15px;
   font-weight: 600; letter-spacing: 0.4px;
 }
 .logo svg { width: 20px; height: 20px; }
 
-/* ── Theme toggle (top right of content column, scrolls with page) ── */
+/* ── Theme toggle (top right, standalone, doesn't affect layout) ── */
 .theme-btn {
-  position: absolute; top: 14px; right: 0; z-index: 10;
+  position: fixed; top: 14px; right: 14px; z-index: 100;
   width: 30px; height: 30px; border-radius: 50%;
   background: var(--bg3); border: 0.5px solid var(--border);
   color: var(--text3); cursor: pointer;
@@ -176,18 +172,16 @@ body {
 </head>
 <body>
 
-<div class="page-wrap">
-  <div class="logo" id="logo-el">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M5 12h14M12 5l7 7-7 7"/>
-    </svg>
-    <span id="logo-text"></span>
-  </div>
-
-  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
-
-  <div id="app"><div class="spinner"></div></div>
+<div class="logo" id="logo-el">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+  <span id="logo-text"></span>
 </div>
+
+<div id="app"><div class="spinner"></div></div>
+
+<button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
 
 <script>
 // ── Translations ──────────────────────────────────────────────────────────────
