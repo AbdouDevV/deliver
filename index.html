@@ -566,4 +566,509 @@ async function loadPage() {
 loadPage();
 </script>
 </body>
+</html>  gap: 6px;
+  transition: color 0.15s;
+}
+.support-link:active { opacity: 0.7; }
+.support-link svg { width: 13px; height: 13px; }
+.support-link.whatsapp { color: var(--green); }
+
+/* ── Status progress bar ── */
+.status-bar {
+  width: 100%; max-width: 420px; margin-bottom: 12px;
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 14px; padding: 16px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.status-steps { display: flex; align-items: center; justify-content: space-between; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.step-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text3);
+}
+.step-dot.done     { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+.step-dot.active   { border-color: var(--gold);  background: var(--gold-soft);  color: var(--gold); }
+.step-label { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; text-align: center; }
+.step-label.done   { color: var(--green); }
+.step-label.active { color: var(--gold); }
+.step-line { flex: 1; height: 1px; background: var(--border); margin: 0 4px; margin-bottom: 14px; }
+.step-line.done { background: var(--green); }
+.step-line.gold { background: var(--gold); }
+
+/* ── Cards ── */
+.card {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 14px; width: 100%; max-width: 420px;
+  overflow: hidden; margin-bottom: 12px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 0.5px solid var(--border);
+}
+.card-header h2 { font-size: 13px; font-weight: 500; color: var(--text2); letter-spacing: 0.6px; text-transform: uppercase; }
+.order-num { font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.badge.delivery   { background: var(--gold-soft);  border: 0.5px solid var(--gold-border);  color: var(--gold); }
+.badge.on-delivery{ background: var(--gold-soft);  border: 0.5px solid var(--gold-border);  color: var(--gold); }
+.card-body { padding: 14px 16px; }
+.row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 0.5px solid var(--border);
+}
+.row:last-child { border-bottom: none; }
+.row-icon {
+  margin-top: 1px; width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold-soft); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.row-icon svg { width: 15px; height: 15px; color: var(--gold); }
+.row-content { flex: 1; }
+.row-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.row-value { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+.row-value.phone { color: var(--gold); font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
+.row-value.address { color: var(--text2); font-weight: 400; }
+.items-list { list-style: none; }
+.items-list li {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--border); font-size: 12px;
+}
+.items-list li:last-child { border-bottom: none; }
+.item-qty {
+  background: var(--gold-soft); color: var(--gold); font-weight: 700;
+  font-size: 11px; min-width: 24px; height: 24px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.item-name { flex: 1; color: var(--text2); line-height: 1.4; }
+.item-note { font-size: 10px; color: var(--gold); font-style: italic; margin-top: 2px; }
+.item-sups { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.item-price { color: var(--text); font-weight: 600; white-space: nowrap; }
+.totals { padding: 10px 0 0; }
+.total-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+.total-row.grand {
+  font-size: 15px; font-weight: 600; color: var(--gold);
+  padding-top: 8px; border-top: 0.5px solid var(--border); margin-top: 6px;
+}
+
+/* ── Action buttons ── */
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; max-width: 420px; padding: 16px; font-size: 15px; font-weight: 700;
+  border: none; border-radius: 12px; cursor: pointer; margin-top: 4px;
+  transition: opacity 0.15s;
+}
+.btn-primary:active { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary svg { width: 18px; height: 18px; }
+.btn-gold  { background: var(--gold);  color: #0F0D0A; }
+.btn-green { background: var(--green); color: #0F0D0A; }
+
+/* ── Delivered screen ── */
+.state-card {
+  border-radius: 14px; width: 100%; max-width: 420px;
+  padding: 40px 24px; text-align: center; margin-bottom: 12px;
+}
+.state-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+
+/* ── Error / loading ── */
+.error-box {
+  background: var(--red-soft); border: 0.5px solid var(--red-border);
+  border-radius: 12px; padding: 20px; text-align: center;
+  max-width: 380px; color: var(--red);
+}
+.error-box h2 { font-size: 16px; margin-bottom: 8px; }
+.error-box p  { font-size: 12px; opacity: 0.75; }
+.token-label  { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; letter-spacing: 0.4px; }
+.spinner {
+  width: 32px; height: 32px; border: 3px solid var(--border);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 40px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="logo" id="logo-el">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+  <span id="logo-text"></span>
+</div>
+
+<div id="app"><div class="spinner"></div></div>
+
+<div class="support-row">
+  <a class="support-link" id="support-link" href="tel:+213000000000"></a>
+  <a class="support-link whatsapp" id="whatsapp-link" href="https://wa.me/213000000000" target="_blank" rel="noopener"></a>
+</div>
+
+<button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
+
+<script>
+// ── Translations ──────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  en: {
+    logo:           'Delivery Portal',
+    order:          'Order',
+    pending:        'Pending',
+    onRoute:        'On Route',
+    delivered:      'Delivered',
+    customerPhone:  'Customer Phone',
+    call:           'Call',
+    deliveryAddress:'Delivery Address',
+    dropOff:        'Drop off at',
+    openMaps:       'Open in Maps',
+    itemsOrdered:   'Items Ordered',
+    subtotal:       'Subtotal',
+    deliveryFee:    'Delivery Fee',
+    total:          'Total',
+    orderNotes:     'Order Notes',
+    startDelivery:  'Start Delivery',
+    markDelivered:  'Mark as Delivered',
+    updating:       'Updating…',
+    confirming:     'Confirming…',
+    deliveredMsg:   'has been successfully delivered.',
+    completed:      'Completed',
+    invalidLink:    'Invalid Link',
+    missingToken:   'Missing token. Please scan the QR code again.',
+    error:          'Error',
+    dineIn:         'Dine In',
+    takeaway:       'Takeaway',
+    delivery:       'Delivery',
+    support:        'Contact Support',
+    whatsapp:       'WhatsApp',
+  },
+  fr: {
+    logo:           'Portail Livraison',
+    order:          'Commande',
+    pending:        'En attente',
+    onRoute:        'En route',
+    delivered:      'Livré',
+    customerPhone:  'Téléphone client',
+    call:           'Appeler',
+    deliveryAddress:'Adresse de livraison',
+    dropOff:        'Déposer à',
+    openMaps:       'Ouvrir dans Maps',
+    itemsOrdered:   'Articles commandés',
+    subtotal:       'Sous-total',
+    deliveryFee:    'Frais de livraison',
+    total:          'Total',
+    orderNotes:     'Notes de commande',
+    startDelivery:  'Démarrer la livraison',
+    markDelivered:  'Marquer comme livré',
+    updating:       'Mise à jour…',
+    confirming:     'Confirmation…',
+    deliveredMsg:   'a été livré avec succès.',
+    completed:      'Terminé',
+    invalidLink:    'Lien invalide',
+    missingToken:   'Jeton manquant. Veuillez scanner à nouveau le QR code.',
+    error:          'Erreur',
+    dineIn:         'Sur place',
+    takeaway:       'À emporter',
+    delivery:       'Livraison',
+    support:        'Contacter le support',
+    whatsapp:       'WhatsApp',
+  },
+};
+
+// ── Language detection ────────────────────────────────────────────────────────
+function getLang() {
+  const raw  = navigator.language || navigator.userLanguage || 'en';
+  const code = raw.split('-')[0].toLowerCase();
+  return TRANSLATIONS[code] ? code : 'en';
+}
+
+const lang = getLang();
+const t    = TRANSLATIONS[lang];
+
+// Apply lang attribute to <html>
+document.documentElement.setAttribute('lang', lang);
+
+// Set logo text
+document.getElementById('logo-text').textContent = t.logo;
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+function svgIcon(type) {
+  const icons = {
+    moon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+    sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  };
+  return icons[type] || '';
+}
+
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.classList.toggle('light', !isDark);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#0F0D0A' : '#F5F2EC');
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.innerHTML = isDark ? svgIcon('moon') : svgIcon('sun');
+}
+// Initialize toggle icon
+document.getElementById('theme-btn').innerHTML = svgIcon('moon');
+
+// ── Support link (footer text) ──────────────────────────────────────────────
+const supportIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`;
+const supportLink = document.getElementById('support-link');
+if (supportLink) {
+  supportLink.innerHTML = supportIcon + ` <span>${t.support}</span>`;
+  supportLink.setAttribute('title', t.support);
+  supportLink.setAttribute('aria-label', t.support);
+}
+
+const whatsappIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.017 2C6.485 2 2 6.486 2 12.017c0 1.897.526 3.706 1.51 5.279L2 22l4.85-1.472a9.96 9.96 0 005.167 1.44h.004c5.531 0 10.017-4.486 10.017-10.017C22.038 6.486 17.552 2 12.017 2zm0 18.09h-.003a8.03 8.03 0 01-4.516-1.334l-.324-.194-3.36 1.02.95-3.276-.211-.34a8.036 8.036 0 01-1.44-4.949c0-4.44 3.616-8.056 8.062-8.056 2.153 0 4.176.839 5.699 2.362a8.006 8.006 0 012.36 5.699c0 4.44-3.617 8.068-8.217 8.068z"/></svg>`;
+const whatsappLink = document.getElementById('whatsapp-link');
+if (whatsappLink) {
+  whatsappLink.innerHTML = whatsappIcon + ` <span>${t.whatsapp}</span>`;
+  whatsappLink.setAttribute('title', t.whatsapp);
+  whatsappLink.setAttribute('aria-label', t.whatsapp);
+}
+
+// ── Constants ────────────────────────────────────────────────────────────────
+const API   = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
+const token = new URLSearchParams(location.search).get('token');
+
+const icons = {
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`,
+  map:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  truck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function orderTypeLabel(type) {
+  return type === 'dine_in' ? t.dineIn : type === 'takeaway' ? t.takeaway : t.delivery;
+}
+
+// ── Step progress bar ─────────────────────────────────────────────────────────
+function renderStatusBar(status) {
+  const steps = [
+    { key: 'pending',     label: t.pending   },
+    { key: 'on_delivery', label: t.onRoute   },
+    { key: 'delivered',   label: t.delivered },
+  ];
+  const idx = steps.findIndex(s => s.key === status);
+
+  const html = steps.map((s, i) => {
+    let dotClass   = '';
+    let labelClass = '';
+    let icon       = (i + 1).toString();
+
+    if (i < idx) {
+      dotClass = 'done'; labelClass = 'done'; icon = '✓';
+    } else if (i === idx) {
+      if (s.key === 'delivered') {
+        dotClass = 'done'; labelClass = 'done'; icon = '✓';
+      } else {
+        dotClass = 'active'; labelClass = 'active';
+      }
+    }
+
+    const lineClass = i < idx ? 'done' : (i === idx - 1 ? 'gold' : '');
+    const line = i < steps.length - 1
+      ? `<div class="step-line ${lineClass}"></div>`
+      : '';
+
+    return `
+      <div class="step">
+        <div class="step-dot ${dotClass}">${icon}</div>
+        <div class="step-label ${labelClass}">${s.label}</div>
+      </div>
+      ${line}`;
+  }).join('');
+
+  return `<div class="status-bar"><div class="status-steps">${html}</div></div>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+async function startDelivery() {
+  const btn = document.getElementById('action-btn');
+  btn.disabled = true;
+  btn.innerHTML = icons.truck + ` ${t.updating}`;
+  const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=start`, { method: 'POST' });
+  if (res.ok) loadPage();
+  else { btn.disabled = false; btn.innerHTML = icons.truck + ` ${t.startDelivery}`; }
+}
+
+async function confirmDelivered() {
+  const btn = document.getElementById('action-btn');
+  btn.disabled = true;
+  btn.innerHTML = icons.check + ` ${t.confirming}`;
+  const res = await fetch(`${API}?token=${encodeURIComponent(token)}&action=confirm`, { method: 'POST' });
+  if (res.ok) loadPage();
+  else { btn.disabled = false; btn.innerHTML = icons.check + ` ${t.markDelivered}`; }
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderPage(order) {
+  const app        = document.getElementById('app');
+  const shortToken = 'TKN-' + order.id.replace(/-/g, '').toUpperCase().substring(0, 8);
+
+  // ── Delivered state ────────────────────────────────────────────────────────
+  if (order.status === 'delivered') {
+    app.innerHTML = `
+      ${renderStatusBar('delivered')}
+      <div class="state-card" style="background:var(--bg2);border:0.5px solid var(--green-border)">
+        <div class="state-icon" style="background:var(--green-soft);border:1px solid var(--green-border)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div style="font-size:24px;font-weight:700;color:var(--green);margin-bottom:10px">${t.delivered}</div>
+        <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:24px">
+          ${t.order} <span style="color:var(--text2);font-weight:600">#${order.order_number}</span>
+          ${t.deliveredMsg}
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;
+          background:var(--green-soft);border:0.5px solid var(--green-border);
+          border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">
+          ${icons.check} ${t.completed}
+        </div>
+      </div>
+      <div class="token-label">${shortToken}</div>`;
+    return;
+  }
+
+  // ── Pending / On Delivery ──────────────────────────────────────────────────
+  const isOnDelivery = order.status === 'on_delivery';
+  const items        = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  const deliveryFee  = Number(order.delivery_fee || 0);
+  const subtotal     = Number(order.subtotal);
+  const total        = Number(order.total);
+
+  const itemsHtml = items.map(item => {
+    const sups = item.supplements || [];
+    return `<li>
+      <span class="item-qty">x${item.quantity}</span>
+      <span class="item-name">
+        ${item.name}${item.size ? ` <span style="color:var(--text3);font-size:10px">(${item.size})</span>` : ''}
+        ${sups.length ? `<div class="item-sups">+ ${sups.map(s => s.name).join(', ')}</div>` : ''}
+        ${item.note  ? `<div class="item-note">📝 ${item.note}</div>` : ''}
+      </span>
+      <span class="item-price">${Number(item.unit_price).toFixed(2)} DA</span>
+    </li>`;
+  }).join('');
+
+  const btnConfig = isOnDelivery
+    ? { cls: 'btn-green', fn: 'confirmDelivered()', icon: icons.check, label: t.markDelivered }
+    : { cls: 'btn-gold',  fn: 'startDelivery()',    icon: icons.truck, label: t.startDelivery };
+
+  app.innerHTML = `
+    ${renderStatusBar(order.status)}
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">${t.order}</div>
+          <div class="order-num">#${order.order_number}</div>
+        </div>
+        <span class="badge ${isOnDelivery ? 'on-delivery' : 'delivery'}">
+          ${isOnDelivery ? icons.truck + ' ' + t.onRoute : orderTypeLabel(order.order_type)}
+        </span>
+      </div>
+      ${order.phone ? `
+<div class="card-body">
+  <div class="row" style="border:none;padding:4px 0;align-items:center">
+    <div class="row-icon">${icons.phone}</div>
+    <div class="row-content">
+      <div class="row-label">${t.customerPhone}</div>
+      <div class="row-value phone">${order.phone}</div>
+    </div>
+    <a href="tel:${order.phone}" style="display:flex;align-items:center;justify-content:center;
+      gap:4px;flex-shrink:0;padding:6px 10px;background:var(--green-soft);
+      border:0.5px solid var(--green-border);border-radius:7px;color:var(--green);
+      font-size:11px;font-weight:600;text-decoration:none">
+      ${t.call}
+    </a>
+  </div>
+</div>` : ''}
+    </div>
+
+    ${order.address ? `
+<div class="card">
+  <div class="card-header"><h2>${t.deliveryAddress}</h2></div>
+  <div class="card-body">
+    <div class="row" style="border:none;padding:4px 0">
+      <div class="row-icon">${icons.map}</div>
+      <div class="row-content">
+        <div class="row-label">${t.dropOff}</div>
+        <div class="row-value address">${order.address}</div>
+        ${order.wilaya && order.wilaya !== 'N/A'
+          ? `<div style="font-size:11px;color:var(--text3);margin-top:3px">${order.wilaya}</div>`
+          : ''}
+      </div>
+    </div>
+    <a href="${
+      order.customer_location?.latitude && order.customer_location?.longitude
+        ? `https://www.google.com/maps/dir/?api=1&destination=${order.customer_location.latitude},${order.customer_location.longitude}`
+        : `https://maps.google.com/?q=${encodeURIComponent(order.address)}`
+    }" target="_blank"
+       style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
+         padding:9px;background:var(--gold-soft);border:0.5px solid var(--gold-border);
+         border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;text-decoration:none">
+      ${icons.map} ${t.openMaps}
+    </a>
+  </div>
+</div>` : ''}
+
+    <div class="card">
+      <div class="card-header"><h2>${t.itemsOrdered}</h2></div>
+      <div class="card-body">
+        <ul class="items-list">${itemsHtml}</ul>
+        <div class="totals">
+          <div class="total-row"><span>${t.subtotal}</span><span>${subtotal.toFixed(2)} DA</span></div>
+          ${deliveryFee > 0
+            ? `<div class="total-row"><span>${t.deliveryFee}</span><span>${deliveryFee.toFixed(2)} DA</span></div>`
+            : ''}
+          <div class="total-row grand"><span>${t.total}</span><span>${total.toFixed(2)} DA</span></div>
+        </div>
+      </div>
+    </div>
+
+    ${order.notes ? `
+    <div class="card">
+      <div class="card-header"><h2>${t.orderNotes}</h2></div>
+      <div class="card-body" style="padding:14px 16px">
+        <p style="font-size:12px;color:var(--text2);line-height:1.5">${order.notes}</p>
+      </div>
+    </div>` : ''}
+
+    <button id="action-btn" class="btn-primary ${btnConfig.cls}" onclick="${btnConfig.fn}">
+      ${btnConfig.icon} ${btnConfig.label}
+    </button>
+    <div class="token-label">${shortToken}</div>`;
+}
+
+// ── Load ──────────────────────────────────────────────────────────────────────
+async function loadPage() {
+  if (!token) {
+    document.getElementById('app').innerHTML =
+      `<div class="error-box"><h2>${t.invalidLink}</h2><p>${t.missingToken}</p></div>`;
+    return;
+  }
+  try {
+    const res  = await fetch(`${API}?token=${encodeURIComponent(token)}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    renderPage(data.order);
+  } catch (e) {
+    document.getElementById('app').innerHTML =
+      `<div class="error-box"><h2>${t.error}</h2><p>${e.message}</p></div>`;
+  }
+}
+
+loadPage();
+</script>
+</body>
 </html>
