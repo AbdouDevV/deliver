@@ -53,7 +53,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  position: relative;
 }
 .support-link {
   font-size: 12px;
@@ -63,10 +63,41 @@ body {
   align-items: center;
   gap: 6px;
   transition: color 0.15s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
 }
 .support-link:active { opacity: 0.7; }
 .support-link svg { width: 13px; height: 13px; }
-.support-link.whatsapp { color: var(--green); }
+
+.support-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 160px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  z-index: 50;
+}
+.support-menu.open { display: flex; }
+.support-menu a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px; border-radius: 7px;
+  font-size: 12px; font-weight: 500; text-decoration: none;
+  color: var(--text2);
+  transition: background 0.15s;
+}
+.support-menu a:active { background: var(--bg3); }
+.support-menu a svg { width: 14px; height: 14px; flex-shrink: 0; }
+.support-menu a.call svg { color: var(--gold); }
 
 /* ── Status progress bar ── */
 .status-bar {
@@ -203,8 +234,10 @@ body {
 <div id="app"><div class="spinner"></div></div>
 
 <div class="support-row">
-  <a class="support-link" id="support-link" href="tel:+213000000000"></a>
-  <a class="support-link whatsapp" id="whatsapp-link" href="https://wa.me/213000000000" target="_blank" rel="noopener"></a>
+  <button class="support-link" id="support-link" onclick="toggleSupportMenu()"></button>
+  <div class="support-menu" id="support-menu">
+    <a class="call" id="support-call" href="tel:+213000000000"></a>
+  </div>
 </div>
 
 <button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
@@ -241,7 +274,7 @@ const TRANSLATIONS = {
     takeaway:       'Takeaway',
     delivery:       'Delivery',
     support:        'Contact Support',
-    whatsapp:       'WhatsApp',
+    callOption:     'Call Us',
   },
   fr: {
     logo:           'Portail Livraison',
@@ -272,7 +305,7 @@ const TRANSLATIONS = {
     takeaway:       'À emporter',
     delivery:       'Livraison',
     support:        'Contacter le support',
-    whatsapp:       'WhatsApp',
+    callOption:     'Appeler',
   },
 };
 
@@ -314,6 +347,8 @@ document.getElementById('theme-btn').innerHTML = svgIcon('moon');
 
 // ── Support link (footer text) ──────────────────────────────────────────────
 const supportIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`;
+const callIcon    = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`;
+
 const supportLink = document.getElementById('support-link');
 if (supportLink) {
   supportLink.innerHTML = supportIcon + ` <span>${t.support}</span>`;
@@ -321,13 +356,27 @@ if (supportLink) {
   supportLink.setAttribute('aria-label', t.support);
 }
 
-const whatsappIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.017 2C6.485 2 2 6.486 2 12.017c0 1.897.526 3.706 1.51 5.279L2 22l4.85-1.472a9.96 9.96 0 005.167 1.44h.004c5.531 0 10.017-4.486 10.017-10.017C22.038 6.486 17.552 2 12.017 2zm0 18.09h-.003a8.03 8.03 0 01-4.516-1.334l-.324-.194-3.36 1.02.95-3.276-.211-.34a8.036 8.036 0 01-1.44-4.949c0-4.44 3.616-8.056 8.062-8.056 2.153 0 4.176.839 5.699 2.362a8.006 8.006 0 012.36 5.699c0 4.44-3.617 8.068-8.217 8.068z"/></svg>`;
-const whatsappLink = document.getElementById('whatsapp-link');
-if (whatsappLink) {
-  whatsappLink.innerHTML = whatsappIcon + ` <span>${t.whatsapp}</span>`;
-  whatsappLink.setAttribute('title', t.whatsapp);
-  whatsappLink.setAttribute('aria-label', t.whatsapp);
+const supportCall = document.getElementById('support-call');
+if (supportCall) {
+  supportCall.innerHTML = callIcon + ` <span>${t.callOption}</span>`;
 }
+
+function toggleSupportMenu(forceClose) {
+  const menu = document.getElementById('support-menu');
+  if (!menu) return;
+  if (forceClose === true) { menu.classList.remove('open'); return; }
+  menu.classList.toggle('open');
+}
+
+// Close the menu when tapping/clicking outside of it
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('support-menu');
+  const trigger = document.getElementById('support-link');
+  if (!menu || !menu.classList.contains('open')) return;
+  if (!menu.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const API   = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
