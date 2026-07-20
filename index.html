@@ -71,34 +71,6 @@ body {
 .support-link:active { opacity: 0.7; }
 .support-link svg { width: 13px; height: 13px; }
 
-.support-menu {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg2);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 6px;
-  display: none;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 160px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  z-index: 50;
-}
-.support-menu.open { display: flex; }
-.support-menu a {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 10px; border-radius: 7px;
-  font-size: 12px; font-weight: 500; text-decoration: none;
-  color: var(--text2);
-  transition: background 0.15s;
-}
-.support-menu a:active { background: var(--bg3); }
-.support-menu a svg { width: 14px; height: 14px; flex-shrink: 0; }
-.support-menu a.call svg { color: var(--gold); }
-
 /* ── Status progress bar ── */
 .status-bar {
   width: 100%; max-width: 420px; margin-bottom: 12px;
@@ -234,10 +206,7 @@ body {
 <div id="app"><div class="spinner"></div></div>
 
 <div class="support-row">
-  <button class="support-link" id="support-link" onclick="toggleSupportMenu()"></button>
-  <div class="support-menu" id="support-menu">
-    <a class="call" id="support-call" href="tel:+213000000000"></a>
-  </div>
+  <a class="support-link" id="support-link" href="tel:+213000000000"></a>
 </div>
 
 <button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
@@ -274,7 +243,6 @@ const TRANSLATIONS = {
     takeaway:       'Takeaway',
     delivery:       'Delivery',
     support:        'Contact Support',
-    callOption:     'Call Us',
   },
   fr: {
     logo:           'Portail Livraison',
@@ -305,7 +273,6 @@ const TRANSLATIONS = {
     takeaway:       'À emporter',
     delivery:       'Livraison',
     support:        'Contacter le support',
-    callOption:     'Appeler',
   },
 };
 
@@ -346,37 +313,14 @@ function toggleTheme() {
 document.getElementById('theme-btn').innerHTML = svgIcon('moon');
 
 // ── Support link (footer text) ──────────────────────────────────────────────
-const supportIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`;
 const callIcon    = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>`;
 
 const supportLink = document.getElementById('support-link');
 if (supportLink) {
-  supportLink.innerHTML = supportIcon + ` <span>${t.support}</span>`;
+  supportLink.innerHTML = callIcon + ` <span>${t.support}</span>`;
   supportLink.setAttribute('title', t.support);
   supportLink.setAttribute('aria-label', t.support);
 }
-
-const supportCall = document.getElementById('support-call');
-if (supportCall) {
-  supportCall.innerHTML = callIcon + ` <span>${t.callOption}</span>`;
-}
-
-function toggleSupportMenu(forceClose) {
-  const menu = document.getElementById('support-menu');
-  if (!menu) return;
-  if (forceClose === true) { menu.classList.remove('open'); return; }
-  menu.classList.toggle('open');
-}
-
-// Close the menu when tapping/clicking outside of it
-document.addEventListener('click', (e) => {
-  const menu = document.getElementById('support-menu');
-  const trigger = document.getElementById('support-link');
-  if (!menu || !menu.classList.contains('open')) return;
-  if (!menu.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
-    menu.classList.remove('open');
-  }
-});
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const API   = 'https://ujnceeaooyvmykixowmr.supabase.co/functions/v1/deliver';
