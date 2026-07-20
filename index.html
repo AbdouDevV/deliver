@@ -47,18 +47,19 @@ body {
 .theme-btn:active { opacity: 0.7; }
 .theme-btn svg { width: 14px; height: 14px; }
 
-/* ── Support button (top left, standalone) ── */
-.support-btn {
-  position: fixed; top: 14px; left: 14px; z-index: 100;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--bg3); border: 0.5px solid var(--border);
-  color: var(--text3); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.18s; flex-shrink: 0;
+/* ── Support link (footer text) ── */
+.support-link {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text3);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
 }
-.support-btn:active { opacity: 0.7; }
-.support-btn svg { width: 14px; height: 14px; }
+.support-link:active { opacity: 0.7; }
+.support-link svg { width: 13px; height: 13px; }
 
 /* ── Status progress bar ── */
 .status-bar {
@@ -194,8 +195,9 @@ body {
 
 <div id="app"><div class="spinner"></div></div>
 
+<a class="support-link" id="support-link" href="tel:+213000000000"></a>
+
 <button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
-<a class="support-btn" id="support-btn" href="tel:+213000000000"></a>
 
 <script>
 // ── Translations ──────────────────────────────────────────────────────────────
@@ -298,13 +300,13 @@ function toggleTheme() {
 // Initialize toggle icon
 document.getElementById('theme-btn').innerHTML = svgIcon('moon');
 
-// ── Support button ──────────────────────────────────────────────────────────
+// ── Support link (footer text) ──────────────────────────────────────────────
 const supportIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`;
-const supportBtn = document.getElementById('support-btn');
-if (supportBtn) {
-  supportBtn.innerHTML = supportIcon;
-  supportBtn.setAttribute('title', t.support);
-  supportBtn.setAttribute('aria-label', t.support);
+const supportLink = document.getElementById('support-link');
+if (supportLink) {
+  supportLink.innerHTML = supportIcon + ` <span>${t.support}</span>`;
+  supportLink.setAttribute('title', t.support);
+  supportLink.setAttribute('aria-label', t.support);
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
